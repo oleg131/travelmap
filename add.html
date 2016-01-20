@@ -52,7 +52,7 @@
         results[0].formatted_address + "<br>" + "Coordinates: " + 
         results[0].geometry.location + "<br>" + "Country: " + country + " (" +
         country_short + ")" + "<br>" + 
-        "<a href=\"#\" onclick=\"removeMe(); return false;\">Remove</a>";
+        "<a href=\"#\" onclick=\"removeMe(); return false;\">Undo</a>";
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }
@@ -62,7 +62,9 @@
   };
 
   function removeMe() {
-    alert('test')
+    xmlhttp.open("GET","mysqlremove.php"); 
+    xmlhttp.send();
+    document.getElementById("indicator").innerHTML = "Removed"
   }
 
   </script>
