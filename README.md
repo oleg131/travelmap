@@ -11,4 +11,4 @@ Navigate to `add.html` to add markers. This will add the match that is closest t
 There's an "Undo" button in case you've stumbled upon a wrong match.
 
 ## The map
-Your complete map is accessible on `indes.html`. Specifyi query string `?countries=1` will highlight countries of the markers.
+Your complete map is accessible on `index.html`. Specifyi query string `?countries=1` will highlight countries of the markers.
