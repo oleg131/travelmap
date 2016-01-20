@@ -1,6 +1,6 @@
 <!DOCTYPE html >
 
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
   <script type="text/javascript">
   
   var geocoder;
@@ -16,7 +16,12 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-  }
+
+    document.getElementById("address").addEventListener("keydown", function (e) {
+      //check whether the pressed key is "Enter"
+      if (e.keyCode === 13) { codeAddress(e); }
+    });
+  };
 
   xmlhttp=new XMLHttpRequest();
 
@@ -26,10 +31,8 @@
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
         var rollover = results[0].formatted_address;
-//        for (var i = 0; i < results[0].address_components.length; i++) {rollover = rollover + "!!!" + results[0].address_components[i].types[0]}
         var marker = new google.maps.Marker({
             map: map,
-//            title: rollover,
             position: results[0].geometry.location
         });
 
@@ -45,13 +48,23 @@
 
        xmlhttp.open("GET","mysqladd.php?name=" + results[0].formatted_address + "&latlng=" + results[0].geometry.location + "&country=" + country + "&country_short=" + country_short); 
        xmlhttp.send();
-       document.getElementById("indicator").innerHTML = "added,,," + results[0].formatted_address + ",,," + results[0].geometry.location + "..." + country + "..." + country_short;
+       document.getElementById("indicator").innerHTML = "Added<br>" + "Address: " + 
+        results[0].formatted_address + "<br>" + "Coordinates: " + 
+        results[0].geometry.location + "<br>" + "Country: " + country + " (" +
+        country_short + ")" + "<br>" + 
+        "<a href=\"#\" onclick=\"removeMe(); return false;\">Remove</a>";
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
+
+    document.getElementById("address").value = "";
+  };
+
+  function removeMe() {
+    alert('test')
   }
-  
+
   </script>
 
   <body onload="initialize()">
@@ -60,9 +73,10 @@
     <div>
       <div style="height:10px; clear:both;"></div>
       <input id="address" type="textbox" value="" style="font-size: 36px;">
-      <input type="button" value="Encode" style="font-size: 36px;" onclick="codeAddress()">
+      <input id="button" type="button" value="Add" style="font-size: 36px;" onclick="codeAddress()">
     </div>
-    <div id="indicator"></div>
+    <div style="height:10px; clear:both;"></div>
+    <div id="indicator" style="font-family: monospace"></div>
 
   </body>
 
