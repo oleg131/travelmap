@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript">
+  
+  var geocoder;
+  var map;
+  function initialize() {
+    document.getElementById("address").focus();
+
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  }
+
+  xmlhttp=new XMLHttpRequest();
+
+  function codeAddress() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var rollover = results[0].formatted_address;
+//        for (var i = 0; i < results[0].address_components.length; i++) {rollover = rollover + "!!!" + results[0].address_components[i].types[0]}
+        var marker = new google.maps.Marker({
+            map: map,
+//            title: rollover,
+            position: results[0].geometry.location
+        });
+
+        for(var addComponent in results[0].address_components){
+            var component = results[0].address_components[addComponent];
+            for(typeIndex in component.types ){
+                if(component.types[typeIndex]=='country') {
+                   country = component.long_name;
+                   country_short = component.short_name;
+                }
+            }   
+        }
+
+       xmlhttp.open("GET","mysqladd.php?name=" + results[0].formatted_address + "&latlng=" + results[0].geometry.location + "&country=" + country + "&country_short=" + country_short); 
+       xmlhttp.send();
+       document.getElementById("indicator").innerHTML = "added,,," + results[0].formatted_address + ",,," + results[0].geometry.location + "..." + country + "..." + country_short;
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+  
+  </script>
+
+  <body onload="initialize()">
+
+    <div id="map_canvas" style="width: 850px; height: 480px;"></div>
+    <div>
+      <div style="height:10px; clear:both;"></div>
+      <form onsubmit="codeAddress()">
+      <input id="address" type="textbox" value="" style="font-size: 36px;">
+      <input type="button" value="Add" style="font-size: 36px;">
+    </form>
+    </div>
+    <div id="indicator"></div>
+
+  </body>
+
+</html>
