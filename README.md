@@ -14,6 +14,6 @@ There's "Undo" button in case you've stumbled upon a wrong match.
 Your complete map is accessible on `index.html`. Specifying query string `?countries=1` will highlight countries of the markers.
 
 ## Demo
-http://travelmap-oleg131.rhcloud.com/
-http://travelmap-oleg131.rhcloud.com/?countries=1
+http://travelmap-oleg131.rhcloud.com/  
+http://travelmap-oleg131.rhcloud.com/?countries=1  
 http://travelmap-oleg131.rhcloud.com/add.html
