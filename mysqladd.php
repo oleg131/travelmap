@@ -1,11 +1,5 @@
 <?php
-require("phpsqlajax_dbinfo.php");
-
-// Opens a connection to a MySQL server
-$connection = mysql_connect (localhost, $username, $password);
-if (!$connection) {
-  die('Not connected : ' . mysql_error());
-}
+require("dbconnection.php");
 
 mysql_select_db($database, $connection);
 
